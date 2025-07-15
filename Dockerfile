@@ -40,7 +40,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
        python3-yaml \
        software-properties-common \
        rsyslog sudo iproute2 \
-       openssh-client git curl nano openssl tar jq less tree \
+       openssh-server openssh-client git curl nano openssl tar jq less tree \
     && apt-get purge -y --auto-remove \
     && apt-get clean \
     && rm -Rf /var/lib/apt/lists/* \
