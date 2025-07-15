@@ -5,21 +5,43 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ENV pip_packages "ansible"
 
+# # Install dependencies. (original)
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends \
+#        apt-utils \
+#        build-essential \
+#        locales \
+#        libffi-dev \
+#        libssl-dev \
+#        libyaml-dev \
+#        python3-dev \
+#        python3-setuptools \
+#        python3-pip \
+#        python3-yaml \
+#        software-properties-common \
+#        rsyslog systemd systemd-cron sudo iproute2 \
+#     && apt-get clean \
+#     && rm -Rf /var/lib/apt/lists/* \
+#     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
+# RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
+
+# # Fix potential UTF-8 errors with ansible-test.
+# RUN locale-gen en_US.UTF-8
+
+
 # Install dependencies.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+RUN --mount=type=cache,target=/var/cache/apt \
+    apt-get update && apt-get install -y --no-install-recommends \
        apt-utils \
-       build-essential \
        locales \
-       libffi-dev \
-       libssl-dev \
-       libyaml-dev \
        python3-dev \
        python3-setuptools \
        python3-pip \
        python3-yaml \
        software-properties-common \
-       rsyslog systemd systemd-cron sudo iproute2 \
+       rsyslog sudo iproute2 \
+       openssh-client git curl nano openssl tar jq less tree \
+    && apt-get purge -y --auto-remove \
     && apt-get clean \
     && rm -Rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man
@@ -27,6 +49,7 @@ RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
 
 # Fix potential UTF-8 errors with ansible-test.
 RUN locale-gen en_US.UTF-8
+
 
 # Remove useless Python environment warning flag.
 RUN sudo rm -rf /usr/lib/python3.12/EXTERNALLY-MANAGED
