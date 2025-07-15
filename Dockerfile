@@ -71,7 +71,7 @@ RUN rm -f /lib/systemd/system/systemd*udev* \
 
 # Configure ubuntu user
 RUN --mount=type=cache,target=/root/.cache \
-    && echo "ubuntu:mysecret" | chpasswd \
+    echo "ubuntu:mysecret" | chpasswd \
     && echo "ubuntu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
