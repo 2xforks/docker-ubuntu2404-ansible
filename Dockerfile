@@ -69,5 +69,10 @@ RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
 RUN rm -f /lib/systemd/system/systemd*udev* \
   && rm -f /lib/systemd/system/getty.target
 
+# Configure ubuntu user
+RUN --mount=type=cache,target=/root/.cache \
+    && echo "ubuntu:mysecret" | chpasswd \
+    && echo "ubuntu ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
 VOLUME ["/sys/fs/cgroup", "/tmp", "/run"]
 CMD ["/lib/systemd/systemd"]
