@@ -3,7 +3,7 @@ LABEL maintainer="Eydel R.R."
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-ENV pip_packages "ansible"
+ENV pip_packages="ansible"
 
 # # Install dependencies. (original)
 # RUN apt-get update \
